@@ -18,6 +18,15 @@ app.post('/api/notes',(req,res)=>{
 
 })
 
+app.get('/api/notes',(req,res)=>{
+    const notes = [
+        { text: "Learn React" },
+        { text: "Learn Express" },
+        { text: "Learn MongoDB" }
+    ];
+    res.json(notes)
+})
+
 
 
 

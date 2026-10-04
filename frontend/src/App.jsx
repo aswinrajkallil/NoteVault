@@ -8,6 +8,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 function App() {
   const [message, setMessage] = useState("");
   const [note, setNote ] = useState("");
+  const [notes, setNotes ] = useState([]);
 
 
   const getMessage  = async ()=>{
@@ -41,13 +42,26 @@ function App() {
     setNote(event.target.value)
     
   }
+// get
+  const getNotes = async ()=>{
+    const fetchedData = await fetch(`${API_URL}/api/notes`);
+    const Data = await fetchedData.json();
+    console.log(Data);
+    setNotes(Data)
+    
+  }
 
   return (
     <div>
       {message}
       <input onChange={ inputValue }/>
       <button onClick={ handleSubmit }>Save Note</button>
-      <p>{ note }</p>
+      <button onClick={ getNotes }>Fetch Note</button>
+      {notes.map((item, index) => {
+        return (
+          <p key={index}>{item.text}</p>
+        );
+      })}
     </div>
   )
 }
