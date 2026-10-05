@@ -1,5 +1,8 @@
 import User from "../models/User.js";
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken";
+import { generateToken } from "../utils/jwt.js";
+
 
 
 const register = async (req,res) =>{
@@ -45,8 +48,11 @@ const Login = async (req,res) =>{
         });
     }
 
+    const accessToken = generateToken(userExists);
+
     return res.status(200).json({
         message:"User Logined Successfully",
+        accessToken
 
     })
 }
