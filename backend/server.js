@@ -20,11 +20,11 @@ app.get('/',(req,res)=>{
 app.use('/api',router)
 
 
-app.post('/api/notes',(req,res)=>{
-    console.log(req.body);
-    res.json(req.body);
+// app.post('/api/notes',(req,res)=>{
+//     console.log(req.body);
+//     res.json(req.body);
 
-})
+// })
 
 app.get('/api/notes',(req,res)=>{
     const notes = [
@@ -34,9 +34,6 @@ app.get('/api/notes',(req,res)=>{
     ];
     res.json(notes)
 })
-
-
-
 
 
 

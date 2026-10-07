@@ -22,6 +22,12 @@ const Login = () => {
       
     })
         const data = await response.json();
+
+
+        localStorage.setItem(
+            "accessToken",
+            data.accessToken
+        )
         console.log(data);
 
         console.log(email);
@@ -43,7 +49,7 @@ const Login = () => {
       <input placeholder='Enter your email' onChange={ handleEmail }/><br/>
       <input placeholder='Enter your password' onChange={ handlePassword }/>
       <button onClick={ handleSubmit }>Login</button>
-      <button onClick={ ()=> navigate("/Register")}>Register</button>
+      <button onClick={ ()=> navigate("/register")}>Register</button>
     </div>
   )
 }
