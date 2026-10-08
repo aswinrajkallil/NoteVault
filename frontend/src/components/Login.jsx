@@ -7,6 +7,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 
 const Login = () => {
+    
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
 
@@ -23,11 +24,14 @@ const Login = () => {
     })
         const data = await response.json();
 
+        if (response.ok) {
+            
+            localStorage.setItem(
+                "accessToken",
+                data.accessToken
+            )
+        }
 
-        localStorage.setItem(
-            "accessToken",
-            data.accessToken
-        )
         console.log(data);
 
         console.log(email);

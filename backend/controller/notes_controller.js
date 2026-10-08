@@ -32,14 +32,17 @@ const getAllNotes = async (req, res) => {
 const createNote = async (req, res) =>{
     try{
 
-        const newNotes  = await Note.create(req.body)
-
+        const newNote  = await Note.create({
+                ...req.body,
+                user: req.user.id
+            })
+        
        
         
         return res.status(201).json({
             success:true,
             message:"Note created successfully",
-            data:newNotes
+            data:newNote
         })
         
     }catch(e){
@@ -52,4 +55,52 @@ const createNote = async (req, res) =>{
     }
 }
 
-export { getAllNotes, createNote };
+const updateNote = async (req,res)=>{
+    try{
+        const noteId = req.params.id;
+        const updatedNote = await Note.findByIdAndUpdate(noteId, req.body, { new: true })
+
+            return res.status(200).json({
+            success:true,
+            message:"Note updated successfully",
+            data:updatedNote
+        })
+    }catch(e){
+        console.log(e);
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong!!"
+        });
+        
+    }
+}
+
+const deleteNote = async (req,res)=>{
+    try{
+        const noteId = req.params.id;
+        const deletedNote = await Note.findByIdAndDelete(noteId)
+
+        if (!deletedNote) {
+            return res.status(404).json({
+            success:false,
+            message: "Note not found",
+            data:deletedNote
+        })
+            }
+
+            return res.status(200).json({
+            success:true,
+            message:"Note deleted successfully",
+            data:deletedNote
+        })
+    }catch(e){
+        console.log(e);
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong!!"
+        });
+        
+    }
+}
+
+export { getAllNotes, createNote, updateNote, deleteNote };
