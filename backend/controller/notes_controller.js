@@ -29,6 +29,36 @@ const getAllNotes = async (req, res) => {
 };
 
 
+const getNote = async (req, res) => {
+    try {
+        const note = await Note.findOne({
+            _id: req.params.id,
+            user: req.user.id
+        })
+
+        if (note) {
+            return res.status(200).json({
+                success: true,
+                message: "note fetched",
+                data: note
+            });
+        }
+
+        return res.status(404).json({
+            success: false,
+            message: "No notes found",
+            data: []
+        });
+
+    } catch (e) {
+        console.log(e);
+
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong!!" + e
+        });
+    }
+};
 const createNote = async (req, res) =>{
     try{
 
@@ -58,7 +88,21 @@ const createNote = async (req, res) =>{
 const updateNote = async (req,res)=>{
     try{
         const noteId = req.params.id;
-        const updatedNote = await Note.findByIdAndUpdate(noteId, req.body, { new: true })
+        const updatedNote = await Note.findOneAndUpdate(
+                {
+                    _id: noteId,
+                    user: req.user.id
+                },
+                req.body,
+                { new: true }
+        );
+        if (!updatedNote) {
+            return res.status(404).json({
+                success: false,
+                message: "Note not found",
+                data: null
+            });
+        }
 
             return res.status(200).json({
             success:true,
@@ -78,7 +122,10 @@ const updateNote = async (req,res)=>{
 const deleteNote = async (req,res)=>{
     try{
         const noteId = req.params.id;
-        const deletedNote = await Note.findByIdAndDelete(noteId)
+        const deletedNote = await Note.findOneAndDelete({
+                    _id: noteId,
+                    user: req.user.id
+                })
 
         if (!deletedNote) {
             return res.status(404).json({
@@ -103,4 +150,4 @@ const deleteNote = async (req,res)=>{
     }
 }
 
-export { getAllNotes, createNote, updateNote, deleteNote };
+export { getAllNotes, createNote, updateNote, deleteNote, getNote };
