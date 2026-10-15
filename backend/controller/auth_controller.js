@@ -95,7 +95,19 @@ const refreshAccessToken = async (req, res) => {
             });
         }
 
+        const newRefreshToken = generateRefreshToken(user);
         const accessToken = generateToken(user);
+
+        user.refreshToken = newRefreshToken;
+        await user.save();
+
+        res.cookie("refreshToken", newRefreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            path: "/"
+        });
 
         return res.status(200).json({
             accessToken
