@@ -3,14 +3,22 @@ import dotenv from "dotenv"
 import cors from "cors";
 import connectDB from "./db/connectDB.js";
 import router from "./routes/auth_route.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config()
 
 const app = express();
+const PORT = process.env.PORT
+
 connectDB()
 
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true
+}));
 app.use(express.json())
+
+app.use(cookieParser());
 
 app.get('/',(req,res)=>{
     res.send("Welcome to Home Page !!")
@@ -40,7 +48,7 @@ app.get('/api/notes',(req,res)=>{
 
 
 
-const PORT = process.env.PORT
+
 
 app.listen(PORT,()=>{
     console.log(`server is running on http://localhost:${PORT}`)

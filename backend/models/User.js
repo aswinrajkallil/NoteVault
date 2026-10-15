@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ["admin", "editor", "viewer"],
         default: "viewer"
+    },
+    refreshToken: {
+        type: String,
+        default: null
     }
 });
 
