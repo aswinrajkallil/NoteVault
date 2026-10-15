@@ -23,7 +23,9 @@ const register = async (req,res) =>{
 
     res.status(201).json({
         message: "User registered successfully",
-        user
+        id:user._id,
+        username:user.username,
+        email:user.email
     });
 
 }
@@ -33,7 +35,7 @@ const Login = async (req,res) =>{
 
     const userExists = await User.findOne( { email } )
     
-    if(!userExists ){
+    if(!userExists){
         return res.status(401).json({
             message: "Invalid email or password"
         });

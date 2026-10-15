@@ -35,7 +35,6 @@ const getNote = async (req, res) => {
             _id: req.params.id,
             user: req.user.id
         })
-
         if (note) {
             return res.status(200).json({
                 success: true,
