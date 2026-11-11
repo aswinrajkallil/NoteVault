@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import axios from 'axios'
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -8,52 +9,63 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 const Login = () => {
     
-    const [ email, setEmail ] = useState("");
-    const [ password, setPassword ] = useState("");
+    const [ formData, setFormData ] = useState({
+        email:"",
+        password:""
+    })
+    const [ message, setMessage ] = useState("");
 
     const navigate = useNavigate();
 
-    const handleSubmit = async ()=>{
-        const response = await fetch(`${API_URL}/api/login`,{
-        method:"POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body:JSON.stringify({ email, password })
-      
-    })
-        const data = await response.json();
+    const handleChange = (event)=>{
+        const {name,value} = event.target
 
-        if (response.ok) {
+        setFormData({
+            ...formData,
+            [name]:value
+        })
+    }
+
+    const handleSubmit = async (event)=>{
+        
+        event.preventDefault()
+
+        try{
+
+            const response = await axios.post(`${API_URL}/api/login`,formData)
             
-            localStorage.setItem(
-                "accessToken",
-                data.accessToken
-            )
+            
+            if (response.ok) {
+                
+                localStorage.setItem(
+                    "accessToken",
+                    data.accessToken
+                )
+            }
+
+            setMessage(response.data.message);
+        }
+        catch(e){
+            setMessage(e.response?.data?.message || "Something went wrong")
         }
 
-        console.log(data);
-
-        console.log(email);
+        
+        console.log(formData);
+        console.log(formData.email)
         
         
     }
 
-    const handleEmail = (event)=>{
-        setEmail(event.target.value);
-        
-    }
-
-    const handlePassword = (event)=>{
-        setPassword(event.target.value);
-    }
     
   return (
     <div>
-      <input placeholder='Enter your email' onChange={ handleEmail }/><br/>
-      <input placeholder='Enter your password' onChange={ handlePassword }/>
-      <button onClick={ handleSubmit }>Login</button>
-      <button onClick={ ()=> navigate("/register")}>Register</button>
+        <form onSubmit={handleSubmit}>
+            <input placeholder='Enter your email' name='email' onChange={ handleChange }/><br/>
+            <input placeholder='Enter your password' name='password' onChange={ handleChange }/>
+            <button type='submit'>Login</button>
+            <button onClick={ ()=> navigate("/register")}>Register</button>
+        </form>
+        <h1>{message}</h1>
     </div>
   )
 }

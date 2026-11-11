@@ -1,39 +1,40 @@
 import React, { useState } from 'react'
 const API_URL = import.meta.env.VITE_API_URL;
+import axios from 'axios';
 
 const Register = () => {
-    const [username, setName ] = useState("");
-    const [email, setEmail ] = useState("");
-    const [password, setPassword ] = useState("");
 
-    const handleName  = (event)=>{
+    const [formData, setFormData] = useState({
+        username: "",
+        email: "",
+        password: ""
+    });
+    const [message, setMessage] = useState("");
 
-        setName(event.target.value)
-    }
-    const handleEmail  = (event)=>{
+    const handleChange = (event) => {
+        const { name, value } = event.target;
 
-        setEmail(event.target.value)
-    }
-    const handlePassword  = (event)=>{
-
-        setPassword(event.target.value)
-    }
+        setFormData({
+            ...formData,
+            [name]: value
+        });
+    };
 
     const handleSubmit = async (event)=>{
 
         event.preventDefault();
+        setMessage("")
 
-        const response = await fetch(`${API_URL}/api/register`,{
-            method:"POST",
-            headers:{
-                "Content-Type":"application/json"
-            },
-            body:JSON.stringify({ username, email, password})
-        })
+        try{
 
-        const data = await response.json();
-
-        console.log(data);
+            const response = await axios.post(`${API_URL}/api/register`,formData)
+             setMessage(response.data.message);
+            
+    
+        }catch(e){
+            setMessage(e.response?.data?.message || "Something went wrong");   
+        }
+  
         
     }
 
@@ -42,18 +43,21 @@ const Register = () => {
         <form onSubmit={handleSubmit}>
             
             <input
-                onChange={handleName}
+                name="username"
+                onChange={handleChange}
                 placeholder="Enter your Username"
             /><br/>
 
             <input
-                onChange={handleEmail}
+                name="email"
+                onChange={handleChange}
                 placeholder="Enter your email"
                 type="email"
             /><br/>
-
+   
             <input
-                onChange={handlePassword}
+                name="password"
+                onChange={handleChange}
                 placeholder="Enter your password"
                 type="password"
             /><br/>
@@ -62,6 +66,9 @@ const Register = () => {
                 Submit
             </button>
         </form>
+
+
+        <h4>{message}</h4>
     </div>
 )
 }
