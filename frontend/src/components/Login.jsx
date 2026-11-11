@@ -35,15 +35,16 @@ const Login = () => {
             const response = await axios.post(`${API_URL}/api/login`,formData)
             
             
-            if (response.ok) {
+            if (response.status === 200) {
                 
                 localStorage.setItem(
                     "accessToken",
-                    data.accessToken
+                    response.data.accessToken
                 )
             }
 
             setMessage(response.data.message);
+            navigate("/register");
         }
         catch(e){
             setMessage(e.response?.data?.message || "Something went wrong")

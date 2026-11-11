@@ -1,27 +1,30 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import NoteList from './NoteList'
+import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL
 
 const Notes = () => {
-    const accessToken = localStorage.getItem("accessToken")
-    const [content,setContent ] = useState([]);
+  try{
 
-    const getNotes = async ()=>{
+      const accessToken = localStorage.getItem("accessToken")
+      const [content,setContent ] = useState([]);
 
-        const response = await fetch(`${API_URL}/api/notes`, {
-        headers: {
+      const getNotes = async ()=>{
+
+      const response = await axios.get(`${API_URL}/api/notes`, {
+          headers: {
             Authorization: `Bearer ${accessToken}`
-        }
-        })
+          }
+      });
 
-        const data = await response.json()
+          
+      setContent(response.data)
+    }
 
-        setContent(data)
-
-
-
+    }catch(e){
+      console.log(error.response?.data?.message || "something went wrong");
     }
     useEffect(()=>{
         getNotes()
