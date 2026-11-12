@@ -34,7 +34,7 @@ app.use('/api',router)
 
 // })
 
-app.get('/api/notes',(req,res)=>{
+app.get('/notes1',(req,res)=>{
     const notes = [
         { text: "Learn React" },
         { text: "Learn Express" },

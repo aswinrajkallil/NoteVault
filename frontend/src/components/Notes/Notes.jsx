@@ -7,21 +7,19 @@ const API_URL = import.meta.env.VITE_API_URL
 
 const Notes = () => {
   const [content,setContent ] = useState([]);
-
-
-      const accessToken = localStorage.getItem("accessToken")
-
-      const getNotes = async ()=>{
-      try{
-        const response = await axios.get(`${API_URL}/api/notes`, {
+  
+  const getNotes = async ()=>{
+    try{
+        const accessToken = localStorage.getItem("accessToken")
+        const response = await axios.get(`${API_URL}/api/admin/notes`, {
           headers: {
             Authorization: `Bearer ${accessToken}`
           }});
   
-        setContent(response.data)
+        setContent(response.data.data)
       }
       catch(e){
-        console.log(error.response?.data?.message || "something went wrong");
+        console.log(e.response?.data?.message || "something went wrong");
       }}
       useEffect(()=>{
           getNotes()
@@ -31,11 +29,11 @@ const Notes = () => {
     <div>
       {content.map((note) => (
       <div key={note._id}>
-        <h3>{note.title}</h3>
+        <h3>{note.heading}</h3>
         <p>{note.content}</p>
       </div>
     ))}
-    <NoteList notes={content} />
+    {/* <NoteList notes={content} /> */}
     </div>
   )
 }
