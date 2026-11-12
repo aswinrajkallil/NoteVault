@@ -6,30 +6,27 @@ import axios from 'axios';
 const API_URL = import.meta.env.VITE_API_URL
 
 const Notes = () => {
-  try{
+  const [content,setContent ] = useState([]);
+
 
       const accessToken = localStorage.getItem("accessToken")
-      const [content,setContent ] = useState([]);
 
       const getNotes = async ()=>{
-
-      const response = await axios.get(`${API_URL}/api/notes`, {
+      try{
+        const response = await axios.get(`${API_URL}/api/notes`, {
           headers: {
             Authorization: `Bearer ${accessToken}`
-          }
-      });
+          }});
+  
+        setContent(response.data)
+      }
+      catch(e){
+        console.log(error.response?.data?.message || "something went wrong");
+      }}
+      useEffect(()=>{
+          getNotes()
 
-          
-      setContent(response.data)
-    }
-
-    }catch(e){
-      console.log(error.response?.data?.message || "something went wrong");
-    }
-    useEffect(()=>{
-        getNotes()
-
-    },[])
+      },[])
   return (
     <div>
       {content.map((note) => (
