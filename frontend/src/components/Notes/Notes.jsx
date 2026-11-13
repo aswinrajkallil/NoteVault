@@ -15,7 +15,7 @@ const Notes = () => {
             const accessToken = localStorage.getItem("accessToken");
 
             const response = await axios.get(
-                `${API_URL}/api/admin/notes`,
+                `${API_URL}/api/notes`,
                 {
                     headers: {
                         Authorization: `Bearer ${accessToken}`
