@@ -1,6 +1,6 @@
 import express from 'express';
 import { Login, refreshAccessToken, register } from '../controller/auth_controller.js';
-import { createNote, deleteNote, getAllNotes, getNote, updateNote } from '../controller/notes_controller.js';
+import { createNote, deleteNote, getAllNotes, getNote, getNotes, updateNote } from '../controller/notes_controller.js';
 import middleware from '../middleware/authMiddleware.js';
 
 const router = express.Router();
