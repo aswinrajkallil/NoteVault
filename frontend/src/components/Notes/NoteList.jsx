@@ -4,7 +4,7 @@ const NoteList = () => {
 
 
   
-  const getNote = () => {
+  const getNote = async () => {
     
       const response = await axios.get(
       `${API_URL}/api/notes/${noteId}`,
