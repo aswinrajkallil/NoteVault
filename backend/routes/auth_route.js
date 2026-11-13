@@ -9,6 +9,7 @@ router.post('/register',register);
 router.post('/login',Login);
 
 router.get('/notes/:id', middleware, getNote);
+router.get('/notes', middleware, getNotes);
 router.get('/admin/notes', middleware, getAllNotes);
 
 router.post('/notes', middleware, createNote);

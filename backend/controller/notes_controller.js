@@ -27,6 +27,26 @@ const getAllNotes = async (req, res) => {
         });
     }
 };
+const getNotes = async (req, res) => {
+    try {
+        const notes = await Note.find({
+            user: req.user.id
+        }).sort({ createdAt: -1 });
+
+        return res.status(200).json({
+            success: true,
+            message: "User notes fetched successfully",
+            data: notes
+        });
+
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong"
+        });
+    }
+};
 
 
 const getNote = async (req, res) => {
@@ -149,4 +169,4 @@ const deleteNote = async (req,res)=>{
     }
 }
 
-export { getAllNotes, createNote, updateNote, deleteNote, getNote };
+export { getAllNotes, createNote, updateNote, deleteNote, getNote, getNotes };
