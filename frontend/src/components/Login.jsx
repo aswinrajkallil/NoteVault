@@ -44,7 +44,7 @@ const Login = () => {
             }
 
             setMessage(response.data.message);
-            navigate("/register");
+            navigate("/notes");
         }
         catch(e){
             setMessage(e.response?.data?.message || "Something went wrong")
